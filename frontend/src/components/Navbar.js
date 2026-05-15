@@ -3,49 +3,48 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const role = localStorage.getItem("role");
+    const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
+    
+    // Admin ද කියලා පරීක්ෂා කරනවා
+    const isAdmin = localStorage.getItem("isAdmin") === "true" || localStorage.getItem("role") === "admin";
 
     const handleLogout = () => {
-        localStorage.clear(); 
-        navigate("/");
+        localStorage.clear();
+        navigate("/login");
+        window.location.reload();
     };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-success shadow mb-4">
             <div className="container">
                 <Link className="navbar-brand fw-bold" to="/view-products">Agri Market</Link>
-                
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <div className="navbar-nav ms-auto align-items-center">
-                        <Link className="nav-link text-white" to="/view-products">Products</Link>
-                        
-                      
-                        {role && (
-                            <Link className="nav-link text-white" to="/orders">My Orders</Link>
+                <div className="collapse navbar-collapse">
+                    <ul className="navbar-nav me-auto">
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/view-products">Products</Link>
+                        </li>
+                        {/* Admin ට විතරක් පේන Add Product ලින්ක් එක */}
+                        {isAdmin && (
+                            <li className="nav-item">
+                                <Link className="nav-link fw-bold text-warning" to="/add-product">+ Add Product</Link>
+                            </li>
                         )}
-
-                        
-                        {role === 'admin' && (
-                            <Link className="nav-link btn btn-outline-light btn-sm ms-2 me-2 text-white" to="/add-product">
-                                + Add Product
-                            </Link>
+                        {/* User ට විතරක් පේන My Orders */}
+                        {!isAdmin && token && (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/my-orders">My Orders</Link>
+                            </li>
                         )}
-
-                       
-                        {username ? (
+                    </ul>
+                    <div className="d-flex align-items-center">
+                        {token ? (
                             <>
-                                <span className="navbar-text text-warning fw-bold ms-3 me-3">
-                                    Hi, {username}
-                                </span>
-                                <button className="btn btn-danger btn-sm" onClick={handleLogout}>Logout</button>
+                                <span className="text-white me-3">Hi, {username} {isAdmin && "(Admin)"}</span>
+                                <button className="btn btn-outline-light btn-sm" onClick={handleLogout}>Logout</button>
                             </>
                         ) : (
-                            <Link className="btn btn-light btn-sm" to="/">Login</Link>
+                            <Link className="btn btn-outline-light btn-sm" to="/login">Login</Link>
                         )}
                     </div>
                 </div>

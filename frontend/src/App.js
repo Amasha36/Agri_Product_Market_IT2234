@@ -1,22 +1,20 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import AddProduct from './pages/AddProduct';
-import AllProducts from './pages/AllProducts';
-import MyOrders from './pages/MyOrders'; 
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Dashboard from './pages/Dashboard'; 
+import Login from './pages/Login';
+import AllProducts from './pages/AllProducts';
+import AddProduct from './pages/AddProduct'; // ඔබ සාදා ඇති Add Product component එකේ නම පාවිච්චි කරන්න
 
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/add-product" element={<AddProduct />} />
+        {/* මුලින්ම ලොග් නොවී ඇත්නම් Login පිටුවට යොමු කරයි */}
+        <Route path="/" element={<Navigate to="/view-products" />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/view-products" element={<AllProducts />} />
-        <Route path="/products" element={<AllProducts />} />
-        <Route path="/orders" element={<MyOrders />} />
+        <Route path="/add-product" element={<AddProduct />} />
       </Routes>
     </Router>
   );

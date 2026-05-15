@@ -10,7 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
 app.use('/api/products', require('./routes/prodcutRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));

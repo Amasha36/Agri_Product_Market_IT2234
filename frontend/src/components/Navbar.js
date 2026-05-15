@@ -6,8 +6,8 @@ const Navbar = () => {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
     
-    // Admin ද කියලා පරීක්ෂා කරනවා
-    const isAdmin = localStorage.getItem("isAdmin") === "true" || localStorage.getItem("role") === "admin";
+    
+    const isAdmin = username === "agriadmin";
 
     const handleLogout = () => {
         localStorage.clear();
@@ -24,23 +24,16 @@ const Navbar = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/view-products">Products</Link>
                         </li>
-                        {/* Admin ට විතරක් පේන Add Product ලින්ක් එක */}
                         {isAdmin && (
                             <li className="nav-item">
                                 <Link className="nav-link fw-bold text-warning" to="/add-product">+ Add Product</Link>
                             </li>
                         )}
-                        {/* User ට විතරක් පේන My Orders */}
-                        {!isAdmin && token && (
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/my-orders">My Orders</Link>
-                            </li>
-                        )}
                     </ul>
-                    <div className="d-flex align-items-center">
+                    <div className="d-flex align-items-center text-white">
                         {token ? (
                             <>
-                                <span className="text-white me-3">Hi, {username} {isAdmin && "(Admin)"}</span>
+                                <span className="me-3 font-monospace">User: {username}</span>
                                 <button className="btn btn-outline-light btn-sm" onClick={handleLogout}>Logout</button>
                             </>
                         ) : (

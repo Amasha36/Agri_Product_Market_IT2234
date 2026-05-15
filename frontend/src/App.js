@@ -3,18 +3,21 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import AllProducts from './pages/AllProducts';
-import AddProduct from './pages/AddProduct'; // ඔබ සාදා ඇති Add Product component එකේ නම පාවිච්චි කරන්න
+import AddProduct from './pages/AddProduct';
+import UpdateProduct from './pages/UpdateProduct'; 
 
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
-        {/* මුලින්ම ලොග් නොවී ඇත්නම් Login පිටුවට යොමු කරයි */}
         <Route path="/" element={<Navigate to="/view-products" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/view-products" element={<AllProducts />} />
         <Route path="/add-product" element={<AddProduct />} />
+        
+        
+        <Route path="/update-product/:id" element={<UpdateProduct />} />
       </Routes>
     </Router>
   );

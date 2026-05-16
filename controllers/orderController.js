@@ -1,6 +1,6 @@
 const Order = require('../models/Order');
 
-// 1. (User සඳහා)
+// 1. (User)
 const createOrder = async (req, res) => {
     try {
         const { productName, price, productId } = req.body;

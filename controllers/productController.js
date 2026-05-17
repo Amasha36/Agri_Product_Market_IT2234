@@ -1,17 +1,14 @@
 const Product = require('../models/Product');
 
-// createProduct function 
-const createProduct = async (req, res) => {
-    
-    console.log("Body contents:", req.body); 
 
+const createProduct = async (req, res) => {
+    console.log("Body contents:", req.body);
     try {
         const { name, price, category, imageUrl } = req.body;
 
-       
         if (!name || !price || !category || !imageUrl) {
-            return res.status(400).json({ 
-                message: `Missing fields: ${!name ? 'name ' : ''}${!price ? 'price ' : ''}${!category ? 'category ' : ''}${!imageUrl ? 'imageUrl' : ''}` 
+            return res.status(400).json({
+                message: `Missing fields: ${!name ? 'name ' : ''}${!price ? 'price ' : ''}${!category ? 'category ' : ''}${!imageUrl ? 'imageUrl' : ''}`
             });
         }
 
@@ -22,6 +19,8 @@ const createProduct = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+
 const getProducts = async (req, res) => {
     try {
         const products = await Product.find();
@@ -30,7 +29,19 @@ const getProducts = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-//  update 
+
+
+const getProductById = async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).json({ message: "Product not found" });
+        res.status(200).json(product);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 const updateProduct = async (req, res) => {
     try {
         const { name, price, category, imageUrl } = req.body;
@@ -46,7 +57,7 @@ const updateProduct = async (req, res) => {
     }
 };
 
-// (Delete)
+
 const deleteProduct = async (req, res) => {
     try {
         const deletedProduct = await Product.findByIdAndDelete(req.params.id);
@@ -57,6 +68,4 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-// Include all exports
-module.exports = { createProduct, getProducts, updateProduct, deleteProduct };
-
+module.exports = { createProduct, getProducts, getProductById, updateProduct, deleteProduct };

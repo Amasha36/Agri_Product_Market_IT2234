@@ -3,25 +3,33 @@ import axios from 'axios';
 
 const MyOrders = () => {
     const [orders, setOrders] = useState([]);
-    const isAdmin = localStorage.getItem("isAdmin") === "true";
+    const isAdmin = localStorage.getItem("role") === "admin";  
 
     const fetchOrders = async () => {
-        const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/orders", {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        setOrders(res.data);
+        try {
+            const token = localStorage.getItem("token");  
+            const res = await axios.get("http://localhost:5000/api/orders", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setOrders(res.data);
+        } catch (err) {
+            console.error("Failed to fetch orders:", err);
+        }
     };
 
     useEffect(() => { fetchOrders(); }, []);
 
     const updateStatus = async (id, status) => {
-        const token = localStorage.getItem("token");
-        await axios.put(`http://localhost:5000/api/orders/${id}/status`, { status }, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        alert("Status Updated!");
-        fetchOrders();
+        try {
+            const token = localStorage.getItem("token");  
+            await axios.put(`http://localhost:5000/api/orders/${id}/status`, { status }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            alert("Status Updated!");
+            fetchOrders();
+        } catch (err) {
+            console.error("Failed to update status:", err);
+        }
     };
 
     return (

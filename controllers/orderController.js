@@ -1,11 +1,11 @@
 const Order = require('../models/Order');
 
-// 1. (User)
+
 const createOrder = async (req, res) => {
     try {
         const { productName, price, productId } = req.body;
         const newOrder = new Order({
-            user: req.user._id, 
+            user: req.user.id,  
             productName,
             price,
             productId,
@@ -18,14 +18,14 @@ const createOrder = async (req, res) => {
     }
 };
 
-// 2. Getting all orders
+
 const getOrders = async (req, res) => {
     try {
         let orders;
-        if (req.user.isAdmin) {
+        if (req.user.role === 'admin') {
             orders = await Order.find().sort({ createdAt: -1 });
         } else {
-            orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 });
+            orders = await Order.find({ user: req.user.id }).sort({ createdAt: -1 });
         }
         res.json(orders);
     } catch (error) {
@@ -33,7 +33,7 @@ const getOrders = async (req, res) => {
     }
 };
 
-// 3. Updating the status of an order
+
 const updateOrderStatus = async (req, res) => {
     try {
         const { status } = req.body;
@@ -42,6 +42,7 @@ const updateOrderStatus = async (req, res) => {
             { status },
             { new: true }
         );
+        if (!updatedOrder) return res.status(404).json({ message: "Order not found" });
         res.json(updatedOrder);
     } catch (error) {
         res.status(500).json({ error: error.message });

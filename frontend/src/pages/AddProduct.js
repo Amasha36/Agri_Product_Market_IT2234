@@ -1,39 +1,37 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+    const navigate = useNavigate();
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:5000/api/products", { name, price, imageUrl });
-            alert("Product Added! ✅");
+            const config = { headers: { Authorization: `Bearer ${userInfo?.token}` } };
+            await axios.post("http://localhost:5000/api/products", { name, price, imageUrl }, config);
+            alert("Product Added Successfully! ✅");
+            navigate('/view-products');
         } catch (err) {
-            alert("Failed to add product.");
+            alert("Failed to add product!");
         }
     };
 
     return (
         <div className="container mt-5">
-            <h2 className="text-center fw-bold">Add New Product</h2>
-            <form onSubmit={handleSubmit} className="card p-4 shadow mx-auto" style={{maxWidth: '500px'}}>
-                <div className="mb-3">
-                    <label className="form-label">Product Name</label>
-                    <input type="text" className="form-control" onChange={(e)=>setName(e.target.value)} required />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Price</label>
-                    <input type="number" className="form-control" onChange={(e)=>setPrice(e.target.value)} required />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Image URL</label>
-                    <input type="text" className="form-control" onChange={(e)=>setImageUrl(e.target.value)} required />
-                </div>
-                <button type="submit" className="btn btn-primary w-100">Save Product</button>
-            </form>
+            <div className="col-md-6 mx-auto card p-4 shadow border-0">
+                <h2 className="text-center fw-bold text-success mb-4">ADD NEW PRODUCT</h2>
+                <form onSubmit={handleSubmit}>
+                    <input type="text" placeholder="Product Name" className="form-control mb-3" onChange={(e) => setName(e.target.value)} required />
+                    <input type="number" placeholder="Price" className="form-control mb-3" onChange={(e) => setPrice(e.target.value)} required />
+                    <input type="text" placeholder="Image URL (Link)" className="form-control mb-3" onChange={(e) => setImageUrl(e.target.value)} required />
+                    <button className="btn btn-dark w-100 fw-bold">PUBLISH PRODUCT</button>
+                </form>
+            </div>
         </div>
     );
 };

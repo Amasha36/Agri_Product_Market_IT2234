@@ -5,9 +5,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
-    
-    
-    const isAdmin = username === "agriadmin";
+    const isAdmin = localStorage.getItem("role") === "admin";  // Bug 17 fix
 
     const handleLogout = () => {
         localStorage.clear();
@@ -24,6 +22,11 @@ const Navbar = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/view-products">Products</Link>
                         </li>
+                        {token && (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/my-orders">My Orders</Link>
+                            </li>
+                        )}
                         {isAdmin && (
                             <li className="nav-item">
                                 <Link className="nav-link fw-bold text-warning" to="/add-product">+ Add Product</Link>
@@ -33,7 +36,9 @@ const Navbar = () => {
                     <div className="d-flex align-items-center text-white">
                         {token ? (
                             <>
-                                <span className="me-3 font-monospace">User: {username}</span>
+                                <span className="me-3 font-monospace">
+                                    {isAdmin ? "👨‍✈️ Admin" : "👤 User"}: {username}
+                                </span>
                                 <button className="btn btn-outline-light btn-sm" onClick={handleLogout}>Logout</button>
                             </>
                         ) : (

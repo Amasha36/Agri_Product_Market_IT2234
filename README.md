@@ -1,5 +1,3 @@
-🌾 Agri Product Market
-
 Agri Product Market is a full-stack web application designed to connect farmers and customers through an online marketplace. The platform allows farmers to add and manage agricultural products while customers can browse and purchase fresh farm products easily.
 
 This project was developed as part of the IT2234 coursework project.
@@ -76,7 +74,7 @@ Provide a simple online agricultural marketplace
 Practice MERN stack development and CRUD operations
 👨‍💻 Team Members
 Amasha Weerawardhana
-A. A. K. C. Abeysinghe
+
 📌 Future Improvements
 Online payment integration
 Order tracking system
@@ -88,3 +86,5 @@ Mobile responsive enhancements
 This project is developed for educational purposes.
 
 🔗 GitHub Repository
+
+https://github.com/Amasha36/Agri_Product_Market_IT2234.git
